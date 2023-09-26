@@ -1,4 +1,4 @@
-import { searchQuery } from "../semanticSearch.js";
+import { searchQuery } from "../../semanticSearch.js";
 import express, { Router } from 'express'
 import serverless from 'serverless-http';
 
