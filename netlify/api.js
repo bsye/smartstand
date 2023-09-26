@@ -11,7 +11,7 @@ app.listen(port, () => {
     console.log('server listening to port 3000')
 })
 
-app.post('/api', async (request, response) => {
+app.post('/', async (request, response) => {
     let res = await searchQuery(request.body.query)
     response.setHeader('Content-Type', 'application/JSON');
     return response.json(res)
