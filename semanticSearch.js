@@ -13,7 +13,11 @@ const openai = new OpenAI({
 });
 
 const readCSVFile = async () => {
-    return await csv({ delimiter: ';' }).fromFile('./catalog.csv')
+    let res = await fetch('https://main--smartstand.netlify.app/catalog.csv', {
+        method: 'get',
+    })
+
+    return await csv({ delimiter: ';' }).fromString(await res.text())
 }
 
 const generateEmbeddings = async () => {
