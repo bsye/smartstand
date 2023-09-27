@@ -21,7 +21,6 @@ const readCSVFile = async () => {
     })
 
     let csvFile = await Buffer.from((await platformRequest.json()).content, 'base64').toString()
-    console.log(csvFile)
     return await csv({ delimiter: ';' }).fromString(csvFile)
 }
 
@@ -31,15 +30,15 @@ const generateEmbeddings = async () => {
     let embeddings = []
     
     for (const data of dataset) {
-        let updatedData = { title: data.title, description: data.description }
-        let metadata = { boxId: data.boxId, image: data.image, title: data.title }
+        let updatedData = { title: data.name, seoTitle: data["seo_title"], shortDesc: data["short_desc"], longDesc: data["long_desc"], seoDesc: data["seo_desc"], description: data.description, personCount: data["min_person"], city: data.city, address: data.address }
+        let metadata = { boxId: data.id, title: data.name, imageUrl: data.image, rating: data.rating, ratingCount: data['rating_count'], TArating: data["TA Rating"], TAratingCount: data["TA Review Count"], personCount: data["min_person"], price: data.price, city: data.city }
 
         const embedding = await openai.embeddings.create({
             input: JSON.stringify(updatedData),
             model: 'text-embedding-ada-002'
         })
 
-        embeddings.push({ id: data.boxId, values: embedding.data[0].embedding, metadata: metadata })
+        embeddings.push({ id: data.id, values: embedding.data[0].embedding, metadata: metadata })
     }
 
     return embeddings
@@ -59,9 +58,9 @@ const embedQuery = async (query) => {
         model: 'text-embedding-ada-002'
     })
 
-    let res = await index.query({ vector: embedding.data[0].embedding, topK: 30, includeMetadata: true})
+    let res = await index.query({ vector: embedding.data[0].embedding, topK: 20, includeMetadata: true})
     
-    return res.matches[0].metadata
+    return res.matches.metadata
 }
 
 export const importEmbeddings = async () => {
