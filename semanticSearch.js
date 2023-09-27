@@ -31,7 +31,7 @@ const generateEmbeddings = async () => {
     
     for (const data of dataset) {
         let updatedData = { title: data.name }
-        let metadata = { boxId: data.id, title: data.name, imageUrl: data.image, rating: data.rating, ratingCount: data['rating_count'], TArating: data["TA Rating"], TAratingCount: data["TA Review Count"], personCount: data["min_person"], price: data.price, city: data.city }
+        let metadata = { boxId: data.id, url: data.url, title: data.name, imageUrl: data.image, rating: data.rating, ratingCount: data['rating_count'], TArating: data["TA Rating"], TAratingCount: data["TA Review Count"], personCount: data["min_person"], price: data.price, city: data.city }
 
         const embedding = await openai.embeddings.create({
             input: JSON.stringify(updatedData),
