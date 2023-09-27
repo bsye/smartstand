@@ -30,7 +30,7 @@ const generateEmbeddings = async () => {
     let embeddings = []
     
     for (const data of dataset) {
-        let updatedData = { title: data.name, seoTitle: data["seo_title"], shortDesc: data["short_desc"], longDesc: data["long_desc"], seoDesc: data["seo_desc"], description: data.description, personCount: data["min_person"], city: data.city, address: data.address }
+        let updatedData = { title: data.name, seoTitle: data["seo_title"], shortDesc: data["short_desc"], longDesc: data["long_desc"], seoDesc: data["seo_desc"], description: data.description, personCount: data["min_person"] }
         let metadata = { boxId: data.id, title: data.name, imageUrl: data.image, rating: data.rating, ratingCount: data['rating_count'], TArating: data["TA Rating"], TAratingCount: data["TA Review Count"], personCount: data["min_person"], price: data.price, city: data.city }
 
         const embedding = await openai.embeddings.create({
@@ -60,7 +60,7 @@ const embedQuery = async (query) => {
 
     let res = await index.query({ vector: embedding.data[0].embedding, topK: 20, includeMetadata: true})
     
-    return res.matches.metadata
+    return res.matches
 }
 
 export const importEmbeddings = async () => {
