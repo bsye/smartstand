@@ -1,4 +1,4 @@
-import { searchQuery } from "../../semanticSearch.js";
+import { searchQuery, importEmbeddings } from "../../semanticSearch.js";
 import express, { Router } from 'express'
 import serverless from 'serverless-http';
 
@@ -11,6 +11,12 @@ router.post('/', async (request, response) => {
     let res = await searchQuery(request.body.query)
     response.setHeader('Content-Type', 'application/JSON');
     return response.json(res)
+})
+
+router.post('/update', async (request, response) => {
+    await importEmbeddings(request.body.query)
+    response.setHeader('Content-Type', 'application/JSON');
+    return response.json('Done')
 })
 
 api.use('/api/', router);

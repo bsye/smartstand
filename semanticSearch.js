@@ -3,25 +3,30 @@ import csv from 'csvtojson'
 import { Pinecone } from '@pinecone-database/pinecone'
 
 const pinecone = new Pinecone({
-    apiKey: process.env.PINECONE_KEY,
+    apiKey: '4c4623b5-62ef-4563-82fe-21775f6f4a27', //process.env.PINECONE_KEY,
     environment: "us-east-1-aws"
 })
 const index = pinecone.index("smartstand")
 
 const openai = new OpenAI({
-    apiKey: process.env.OPENAI_KEY
+    apiKey: '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',//process.env.OPENAI_KEY
 });
 
 const readCSVFile = async () => {
-    let res = await fetch('https://main--smartstand.netlify.app/catalog.csv', {
-        method: 'get',
+    let platformRequest = await fetch(`https://gitlab.production.smartbox.com/api/v4/projects/2108/repository/files/catalog.csv?ref=main`, {
+        method: 'GET',
+        headers: {
+            'PRIVATE-TOKEN': 'DGukGVBd_bRJpVPzbn6j'
+        }
     })
 
-    return await csv({ delimiter: ';' }).fromString(await res.text())
+    let csvFile = await Buffer.from((await platformRequest.json()).content, 'base64').toString()
+    return await csv({ delimiter: ';' }).fromString(csvFile)
 }
 
 const generateEmbeddings = async () => {
     let dataset = await readCSVFile()
+
     let embeddings = []
     
     for (const data of dataset) {
@@ -41,7 +46,7 @@ const generateEmbeddings = async () => {
 
 const saveEmbeddings = async () => {
     let embeddings = await generateEmbeddings()
-
+    
     for (let i = 0; embeddings.length > i; i++) {
         await index.upsert([ embeddings[i]]);
     }
@@ -58,7 +63,12 @@ const embedQuery = async (query) => {
     return res.matches[0].metadata
 }
 
-export const searchQuery = async (query) => {
+await saveEmbeddings()
+
+export const importEmbeddings = async () => {
     await saveEmbeddings()
+}
+
+export const searchQuery = async (query) => {
     return await embedQuery(query)
 }
