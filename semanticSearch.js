@@ -13,16 +13,19 @@ const openai = new OpenAI({
 });
 
 const readCSVFile = async () => {
-    let platformRequest = await fetch(`https://gitlab.production.smartbox.com/api/v4/projects/2108/repository/files/catalog.csv?ref=main`, {
+    let platformRequest = await fetch(`https://api.github.com/repos/bsye/smartstand-config/contents/catalog.csv`, {
         method: 'GET',
         headers: {
-            'PRIVATE-TOKEN': 'DGukGVBd_bRJpVPzbn6j'
+            'PRIVATE-TOKEN': 'DGukGVBd_bRJpVPzbn6j',
+            "Authorization": "Bearer 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"
         }
     })
 
     let csvFile = await Buffer.from((await platformRequest.json()).content, 'base64').toString()
     return await csv({ delimiter: ';' }).fromString(csvFile)
 }
+
+readCSVFile()
 
 const generateEmbeddings = async () => {
     let dataset = await readCSVFile()
