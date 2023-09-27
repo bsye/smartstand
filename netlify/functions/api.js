@@ -16,7 +16,7 @@ router.post('/', async (request, response) => {
 router.post('/update', async (request, response) => {
     await importEmbeddings()
     response.setHeader('Content-Type', 'application/JSON');
-    return response.json({ "done": "true" })
+    return response.status(204).send();
 })
 
 api.use('/api/', router);
