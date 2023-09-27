@@ -3,13 +3,13 @@ import csv from 'csvtojson'
 import { Pinecone } from '@pinecone-database/pinecone'
 
 const pinecone = new Pinecone({
-    apiKey: '4c4623b5-62ef-4563-82fe-21775f6f4a27', //process.env.PINECONE_KEY,
+    apiKey: process.env.PINECONE_KEY,
     environment: "us-east-1-aws"
 })
 const index = pinecone.index("smartstand")
 
 const openai = new OpenAI({
-    apiKey: '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',//process.env.OPENAI_KEY
+    apiKey: process.env.OPENAI_KEY
 });
 
 const readCSVFile = async () => {
