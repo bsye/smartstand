@@ -1,9 +1,13 @@
 import { searchQuery, importEmbeddings } from "../../semanticSearch.js";
+import cors from 'cors'
 import express, { Router } from 'express'
 import serverless from 'serverless-http';
 
 const api = express()
 api.use(express.json())
+api.use(cors({
+    origin: '*',
+}))
 
 const router = Router()
 

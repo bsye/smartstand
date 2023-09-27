@@ -11,6 +11,7 @@
   "dependencies": {
     "@netlify/functions": "^2.1.0",
     "@pinecone-database/pinecone": "^1.0.1",
+    "cors": "^2.8.5",
     "csv-reader": "^1.0.12",
     "csvtojson": "^2.0.10",
     "express": "^4.18.2",
