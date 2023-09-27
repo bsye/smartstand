@@ -63,8 +63,6 @@ const embedQuery = async (query) => {
     return res.matches[0].metadata
 }
 
-await saveEmbeddings()
-
 export const importEmbeddings = async () => {
     await saveEmbeddings()
 }
