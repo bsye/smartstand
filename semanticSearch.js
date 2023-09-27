@@ -45,8 +45,6 @@ const generateEmbeddings = async () => {
     return embeddings
 }
 
-generateEmbeddings()
-
 const saveEmbeddings = async () => {
     let embeddings = await generateEmbeddings()
     
