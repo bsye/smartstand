@@ -16,16 +16,14 @@ const readCSVFile = async () => {
     let platformRequest = await fetch(`https://api.github.com/repos/bsye/smartstand-config/contents/catalog.csv`, {
         method: 'GET',
         headers: {
-            'PRIVATE-TOKEN': 'DGukGVBd_bRJpVPzbn6j',
-            "Authorization": "Bearer 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"
+            "Authorization": `Bearer ${process.env.GITHUB_KEY}`
         }
     })
 
     let csvFile = await Buffer.from((await platformRequest.json()).content, 'base64').toString()
+    console.log(csvFile)
     return await csv({ delimiter: ';' }).fromString(csvFile)
 }
-
-readCSVFile()
 
 const generateEmbeddings = async () => {
     let dataset = await readCSVFile()
@@ -46,6 +44,8 @@ const generateEmbeddings = async () => {
 
     return embeddings
 }
+
+generateEmbeddings()
 
 const saveEmbeddings = async () => {
     let embeddings = await generateEmbeddings()
