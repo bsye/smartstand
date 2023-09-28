@@ -52,6 +52,8 @@ const saveEmbeddings = async () => {
     }
 }
 
+saveEmbeddings()
+
 const embedQuery = async (query) => {
     const embedding = await openai.embeddings.create({
         input: query,
